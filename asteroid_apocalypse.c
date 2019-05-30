@@ -19,29 +19,39 @@ This file contains the main function for the Asteroid Apocalypse teensypewpew pr
 #include "cpu_speed.h"
 #include "graphics.h"
 #include "lcd.h"
+#include "lcd_model.h"
 #include "macros.h"
 #include "usb_serial.h"
 #include "cab202_adc.h"
+#include "setup_teensy.h"
+#include "starfighter.h"
 
+// Draw all function.
+void draw_all() {
+    // Draw everything with graphics.h.
+	clear_screen();
+    draw_deflector_shield();
+	show_screen();
+    // Draw Starfighter directly.
+    draw_starfighter();
+}
+
+// Setup the teensy and all objects in the simulation.
 void setup(void) {
-	set_clock_speed(CPU_8MHz);
-	lcd_init(LCD_DEFAULT_CONTRAST);
-	clear_screen();
-	show_screen();
+    // Setup teensy.
+    setup_teensy();
+    // Setup Starfighter.
+    setup_starfighter();
+    // Draw all.
+    draw_all();
 }
 
+// This is the main process, runs the simulation.
 void process(void) {
-	char *hello = "Hello World!";
-	clear_screen();
-	draw_string(0, 0, hello, FG_COLOUR);
-	draw_string(0, 8, hello, BG_COLOUR);
-	draw_string(0, 16, hello, FG_COLOUR);
-	draw_string(0, 24, hello, BG_COLOUR);
-	draw_string(0, 32, hello, FG_COLOUR);
-	draw_string(0, 40, hello, BG_COLOUR);
-	show_screen();
+
 }
 
+// Run the program.
 int main(void) {
 	setup();
 

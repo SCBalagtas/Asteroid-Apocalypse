@@ -1,22 +1,15 @@
 # CAB202 Teensy Makefile
-# Lawrence Buckingham, October  2017.
+# Lawrence Buckingham, September 2017.
 # Queensland University of Technology.
 
 # Replace these targets with your target (hex file) name, including the .hex part.
 
 TARGETS = \
-	asteroid_apocalypse.hex \
+	asteroid_apocalypse.hex
 
 # Set the name of the folder containing libcab202_teensy.a
-CAB202_TEENSY_FOLDER=../../CAB202/CAB202_teensy
 
-# Set the name of the folder containing usb_serial.o
-USB_SERIAL_FOLDER =../../CAB202/usb_serial
-USB_SERIAL_OBJ =../../CAB202/usb_serial/usb_serial.o
-
-# Set the name of the folder containing uart.o
-ADC_FOLDER =../../CAB202/CAB202_adc
-ADC_OBJ =../../CAB202/CAB202_adc/cab202_adc.o
+CAB202_TEENSY_FOLDER = ../../CAB202/CAB202_teensy 
 
 # ---------------------------------------------------------------------------
 #	Leave the rest of the file alone.
@@ -24,11 +17,8 @@ ADC_OBJ =../../CAB202/CAB202_adc/cab202_adc.o
 
 all: $(TARGETS)
 
-TEENSY_LIBS = $(USB_SERIAL_OBJ) $(ADC_OBJ) -lcab202_teensy -lprintf_flt -lm 
-
-TEENSY_DIRS =-I$(CAB202_TEENSY_FOLDER) -L$(CAB202_TEENSY_FOLDER) \
-	-I$(USB_SERIAL_FOLDER) -I$(ADC_FOLDER) 
-
+TEENSY_LIBS = -lcab202_teensy -lprintf_flt -lm 
+TEENSY_DIRS =-I$(CAB202_TEENSY_FOLDER) -L$(CAB202_TEENSY_FOLDER)
 TEENSY_FLAGS = \
 	-std=gnu99 \
 	-mmcu=atmega32u4 \
@@ -39,7 +29,6 @@ TEENSY_FLAGS = \
 	-fpack-struct \
 	-fshort-enums \
 	-Wall \
-	-Werror \
 	-Wl,-u,vfprintf \
 	-Os 
 
@@ -52,6 +41,6 @@ clean:
 
 rebuild: clean all
 
-%.hex : %.c
-	avr-gcc $< $(TEENSY_FLAGS) $(TEENSY_DIRS) $(TEENSY_LIBS) -o $@.obj
+%.hex :
+	avr-gcc *.c $(TEENSY_FLAGS) $(TEENSY_DIRS) $(TEENSY_LIBS) -o $@.obj
 	avr-objcopy -O ihex $@.obj $@
