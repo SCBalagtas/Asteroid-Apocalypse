@@ -61,6 +61,20 @@ void setup_timer() {
     sei();
 }
 
+// Setup usb serial connection
+void setup_usb_serial() {
+	// Set up usb serial connection and display message
+	draw_string(10, 10, "Connect USB...", FG_COLOUR);
+	show_screen();
+	usb_init();
+	while ( !usb_configured() ) {
+		// Block until USB is ready.
+	}
+	clear_screen();
+	draw_string(10, 10, "USB connected", FG_COLOUR);
+	show_screen();
+}
+
 // Setup teensy.
 void setup_teensy() {
     // Setup clock speed.
@@ -71,4 +85,6 @@ void setup_teensy() {
     setup_timer();
     // Setup LCD.
 	lcd_init(LCD_DEFAULT_CONTRAST);
+    // Setup usb serial connection
+    setup_usb_serial();
 }

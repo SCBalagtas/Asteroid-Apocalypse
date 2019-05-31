@@ -30,13 +30,33 @@ This file contains the main function for the Asteroid Apocalypse teensypewpew pr
 int simulation_over = 0; // false.
 int paused = 1; // true.
 
+/**
+ * Introduction display.
+ * A loop which displays the introduction display until the 
+ * left button or 'r' is pressed.
+ * */
+void introduction() {
+    int start_game = 0; // false.
+    // While start_game == 0, keep displaying the introduction display.
+    while (start_game == 0) {
+        // Draw a temporary introduction display...
+        clear_screen();
+        draw_string(10, 10, "Intro...", FG_COLOUR);
+	    show_screen();
+        // Reviece a character from serial communication with the computer and store it in 'ch'.
+        int16_t ch = usb_serial_getchar();
+        // Check if left button or 'r' is pressed.
+        if (BIT_IS_SET(PINF, 6) || ch == 'r') start_game = 1; // End the introduction display loop.
+    }
+}
+
 // Draw all function.
 void draw_all() {
     // Draw everything with graphics.h.
 	clear_screen();
     draw_deflector_shield();
 	show_screen();
-    // Draw Starfighter directly.
+    // Draw starfighter directly.
     draw_starfighter();
 }
 
@@ -44,30 +64,38 @@ void draw_all() {
 void setup(void) {
     // Setup teensy.
     setup_teensy();
-    // Setup Starfighter.
+    // Setup starfighter.
     setup_starfighter();
-    // Draw all.
-    draw_all();
     // TEMPORARY!!!
     if (paused == 1) SET_BIT(PORTB, 3);
 }
 
 // A reset function to reset the simulation.
 void reset() {
-    setup();
+    // Pause the game.
+    paused = 1;
+    // Reset starfighter.
+    setup_starfighter();
+    // Draw all.
+    draw_all();
+    // TEMPORARY!!!
+    CLEAR_BIT(PORTB, 2);
+    SET_BIT(PORTB, 3);
 }
 
 // A pause function which flips the paused variable.
 void pause() {
     if (paused == 1) {
         paused = 0;
+        // TEMPORARY!!!
         CLEAR_BIT(PORTB, 3);
         SET_BIT(PORTB, 2);        
     } else {
         paused = 1;
+        // TEMPORARY!!!
         CLEAR_BIT(PORTB, 2);
         SET_BIT(PORTB, 3);
-    } 
+    }
 }
 
 /**
@@ -78,16 +106,22 @@ void pause() {
  *      none
  * */
 void do_operations() {
-    // If joystick center is set, pause().
-    if (BIT_IS_SET(PINB, 0)) {
+    // Reviece a character from serial communication with the computer and store it in 'ch'.
+    int16_t ch = usb_serial_getchar();
+    // If left button is set or 'r' is recieved, reset().
+    if (BIT_IS_SET(PINF, 6) || ch == 'r') {
+        reset();
+    }
+    // else if joystick center is set or 'p' is recieved, pause().
+    else if (BIT_IS_SET(PINB, 0) || ch == 'p') {
         pause();
     }
-    // else if joystick left is set, change starfighter direction to left.
-    else if (BIT_IS_SET(PINB, 1)) {
+    // else if joystick left is set or 'a' is recieved, change starfighter direction to left.
+    else if (BIT_IS_SET(PINB, 1) || ch == 'a') {
         change_starfighter_direction(0);
     }
-    // else if joystick right is set, change starfighter direction to right.
-    else if (BIT_IS_SET(PIND, 0)) {
+    // else if joystick right is set or 'd' is recieved, change starfighter direction to right.
+    else if (BIT_IS_SET(PIND, 0) || ch == 'd') {
         change_starfighter_direction(1);
     }
 }
@@ -110,7 +144,8 @@ void process(void) {
 // Run the program.
 int main(void) {
 	setup();
-
+    introduction();
+    draw_all();
 	for ( ;; ) {
 		process();
 		_delay_ms(10);
