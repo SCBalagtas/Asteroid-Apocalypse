@@ -28,3 +28,4 @@ for the Asteroid Apocalypse teensypewpew program.
 void draw_deflector_shield();
 void setup_starfighter();
 void draw_starfighter();
+void update_starfighter();

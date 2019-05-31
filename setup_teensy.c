@@ -43,6 +43,22 @@ void setup_teensy_inputs() {
     CLEAR_BIT(DDRF, 5);
     // Initialise ADC to configure input from potentiometers.
     adc_init();
+
+    // TEMPORARY!!!
+    SET_BIT(DDRB, 2);
+    SET_BIT(DDRB, 3);
+}
+
+// Setup timer.
+void setup_timer() {
+    // Initialise Timer 0 in normal mode so that it overflows 
+	// with a period of approximately 0.008 seconds.
+    TCCR0A = 0;
+    TCCR0B = 4;
+    // Enable timer overflow interrupt for Timer 0.
+    TIMSK0 = 1;
+    // Turn on interrupts.
+    sei();
 }
 
 // Setup teensy.
@@ -51,6 +67,8 @@ void setup_teensy() {
 	set_clock_speed(CPU_8MHz);
     // Setup teensy inputs.
     setup_teensy_inputs();
+    // Setup timer 0 in normal mode so that it overflows every 0.008 seconds.
+    setup_timer();
     // Setup LCD.
 	lcd_init(LCD_DEFAULT_CONTRAST);
 }

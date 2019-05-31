@@ -44,6 +44,8 @@ void draw_deflector_shield() {
 #define STARFIGHTER_WIDTH 14
 #define STARFIGHTER_HEIGHT 7
 static uint8_t starfighter_x, starfighter_y;
+static int starfighter_velocity;
+static int starfighter_direction;
 static uint8_t starfighter_original[STARFIGHTER_WIDTH] = {
     0b11110000,
     0b01000000,
@@ -65,6 +67,9 @@ static uint8_t starfighter_original[STARFIGHTER_WIDTH] = {
 void setup_starfighter() {
     starfighter_x = (LCD_X/ 2) - (STARFIGHTER_WIDTH/ 2);
     starfighter_y = (LCD_Y - STARFIGHTER_HEIGHT);
+    // Assign a random direction (either left or right) with velocity of 1.
+    starfighter_velocity = 1;
+    starfighter_direction = rand() % 2; // 0 = Left, 1 = Right.
 }
 // Draw the Starfighter with the center being (starfighter_x, starfighter_y)
 void draw_starfighter() {
@@ -74,5 +79,26 @@ void draw_starfighter() {
 
     for (int i = 0; i < STARFIGHTER_WIDTH; i++) {
         LCD_DATA(starfighter_original[i]);
+    }
+}
+
+// Update the Starfighter.
+void update_starfighter() {
+    // If velocity == 0, don't update starfighter.
+    if (starfighter_velocity == 0) {
+        return;
+    } else {
+        // If direction == 0 and if move doesn't overlap the left wall, move left.
+        if (starfighter_direction == 0 && (starfighter_x - 1) > 0) {
+            starfighter_x--;
+        }
+        // If direction == 1 and if move doesn't overlap the right wall, move right.
+        else if (starfighter_direction == 1 && (starfighter_x + 1) <= (LCD_X - STARFIGHTER_WIDTH)) {
+            starfighter_x++;
+        } 
+        // Else don't update starfighter.
+        else {
+            return;
+        }
     }
 }

@@ -41,6 +41,6 @@ clean:
 
 rebuild: clean all
 
-%.hex :
+%.hex : *.c
 	avr-gcc *.c $(TEENSY_FLAGS) $(TEENSY_DIRS) $(TEENSY_LIBS) -o $@.obj
 	avr-objcopy -O ihex $@.obj $@
