@@ -30,6 +30,7 @@ void setup_starfighter();
 void draw_starfighter();
 void update_starfighter();
 void change_starfighter_direction(int direction);
+void animate_starfighter();
 uint8_t get_starfighter_velocity();
 uint8_t get_starfighter_direction();
 void set_starfighter_velocity(uint8_t new_velocity);

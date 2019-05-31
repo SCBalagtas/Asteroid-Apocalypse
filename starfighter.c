@@ -92,7 +92,7 @@ void update_starfighter() {
         if (starfighter_direction == 0 && (starfighter_x - 1) > 0) {
             starfighter_x--;
         }
-        // If direction == 1 and if move doesn't overlap the right wall, move right.
+        // else if direction == 1 and if move doesn't overlap the right wall, move right.
         else if (starfighter_direction == 1 && (starfighter_x + 1) <= (LCD_X - STARFIGHTER_WIDTH)) {
             starfighter_x++;
         } 
@@ -117,6 +117,27 @@ void change_starfighter_direction(int direction) {
     else {
         starfighter_direction = direction;
         starfighter_velocity = 1;
+    }
+}
+
+// Animate the Starfighter for the introduction display.
+// This will hack away at the update_starfighter() and change_starfighter_direction() functions.
+void animate_starfighter() {
+    // If direction == 0 and if move doesn't overlap the left wall, move left.
+    if (starfighter_direction == 0 && (starfighter_x - 1) > 0) {
+        starfighter_x--;
+    }
+    // else if direction == 1 and if move doesn't overlap the right wall, move right.
+    else if (starfighter_direction == 1 && (starfighter_x + 1) <= (LCD_X - STARFIGHTER_WIDTH)) {
+        starfighter_x++;
+    } 
+    // else if direction == 1 and if move will overlap the right wall, change direction to left. 
+    else if (starfighter_direction == 1 && (starfighter_x + 1) > (LCD_X - STARFIGHTER_WIDTH)) {
+        change_starfighter_direction(0);
+    } 
+    // Else change the direction to right.
+    else {
+        change_starfighter_direction(1);
     }
 }
 

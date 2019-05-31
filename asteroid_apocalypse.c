@@ -39,14 +39,40 @@ void introduction() {
     int start_game = 0; // false.
     // While start_game == 0, keep displaying the introduction display.
     while (start_game == 0) {
-        // Draw a temporary introduction display...
+        // Draw the introduction display.
+        // Draw text and deflector shield with graphics.h.
         clear_screen();
-        draw_string(10, 10, "Intro...", FG_COLOUR);
+        draw_string(22, 1, "n9998250", FG_COLOUR);
+        draw_string(22, 15, "Asteroid", FG_COLOUR);
+        draw_string(17, 25, "Apocalypse", FG_COLOUR);
+        draw_deflector_shield();
 	    show_screen();
-        // Reviece a character from serial communication with the computer and store it in 'ch'.
+        // Draw starfighter directly.
+        draw_starfighter();
+        animate_starfighter();
+        // Recieve a character from serial communication with the computer and store it in 'ch'.
         int16_t ch = usb_serial_getchar();
         // Check if left button or 'r' is pressed.
         if (BIT_IS_SET(PINF, 6) || ch == 'r') start_game = 1; // End the introduction display loop.
+    }
+    // Reset the starfighter before we leave this function.
+    setup_starfighter();
+}
+
+/**
+ * Quit display.
+ * An infinite loop which displays student number on an inverted screen.
+ * You cannot leave this loop.
+ * */
+void quit() {
+    while(simulation_over == 1) {
+        // Draw the quit display.
+        // Draw text with graphics.h.
+        clear_screen();
+        draw_string(22, 30, "n9998250", FG_COLOUR);
+        show_screen();
+        // Invert screen.
+        LCD_CMD(lcd_set_display_mode, lcd_display_inverse);
     }
 }
 
@@ -112,17 +138,21 @@ void do_operations() {
     if (BIT_IS_SET(PINF, 6) || ch == 'r') {
         reset();
     }
-    // else if joystick center is set or 'p' is recieved, pause().
+    // Else if joystick center is set or 'p' is recieved, pause().
     else if (BIT_IS_SET(PINB, 0) || ch == 'p') {
         pause();
     }
-    // else if joystick left is set or 'a' is recieved, change starfighter direction to left.
+    // Else if joystick left is set or 'a' is recieved, change starfighter direction to left.
     else if (BIT_IS_SET(PINB, 1) || ch == 'a') {
         change_starfighter_direction(0);
     }
-    // else if joystick right is set or 'd' is recieved, change starfighter direction to right.
+    // Else if joystick right is set or 'd' is recieved, change starfighter direction to right.
     else if (BIT_IS_SET(PIND, 0) || ch == 'd') {
         change_starfighter_direction(1);
+    }
+    // Else if right button is set or 'q' is recieved, set simulation_over to 1.
+    else if (BIT_IS_SET(PINF, 5) || ch == 'q') {
+        simulation_over = 1;
     }
 }
 
@@ -133,6 +163,7 @@ ISR(TIMER0_OVF_vect) {
 
 // This is the main process, runs the simulation.
 void process(void) {
+    if (simulation_over == 1) quit();
     do_operations();
     if (paused == 0) {
         // Run the game.
