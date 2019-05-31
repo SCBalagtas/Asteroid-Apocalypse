@@ -63,7 +63,6 @@ void pause() {
         paused = 0;
         CLEAR_BIT(PORTB, 3);
         SET_BIT(PORTB, 2);        
-        
     } else {
         paused = 1;
         CLEAR_BIT(PORTB, 2);
@@ -82,6 +81,14 @@ void do_operations() {
     // If joystick center is set, pause().
     if (BIT_IS_SET(PINB, 0)) {
         pause();
+    }
+    // else if joystick left is set, change starfighter direction to left.
+    else if (BIT_IS_SET(PINB, 1)) {
+        change_starfighter_direction(0);
+    }
+    // else if joystick right is set, change starfighter direction to right.
+    else if (BIT_IS_SET(PIND, 0)) {
+        change_starfighter_direction(1);
     }
 }
 

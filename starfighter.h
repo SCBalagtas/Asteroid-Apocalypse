@@ -29,3 +29,8 @@ void draw_deflector_shield();
 void setup_starfighter();
 void draw_starfighter();
 void update_starfighter();
+void change_starfighter_direction(int direction);
+uint8_t get_starfighter_velocity();
+uint8_t get_starfighter_direction();
+void set_starfighter_velocity(uint8_t new_velocity);
+void set_starfighter_direction(uint8_t new_direction);

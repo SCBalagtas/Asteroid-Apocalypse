@@ -71,7 +71,7 @@ void setup_starfighter() {
     starfighter_velocity = 1;
     starfighter_direction = rand() % 2; // 0 = Left, 1 = Right.
 }
-// Draw the Starfighter with the center being (starfighter_x, starfighter_y)
+// Draw the Starfighter with the center being (starfighter_x, starfighter_y).
 void draw_starfighter() {
     LCD_CMD(lcd_set_function, lcd_instr_basic | lcd_addr_horizontal);
     LCD_CMD(lcd_set_x_addr, starfighter_x);
@@ -101,4 +101,41 @@ void update_starfighter() {
             return;
         }
     }
+}
+
+// Change the Starfighter direction.
+void change_starfighter_direction(int direction) {
+    // If starfighter is currently moving in the same direction, do nothing.
+    if (starfighter_velocity == 1 && starfighter_direction == direction) {
+        return;
+    }
+    // Else if starfighter is currently moving in the opposite direction, stop it. 
+    else if (starfighter_velocity == 1) {
+        starfighter_velocity = 0;
+    }
+    // Else flip the current direction and make the starfighter move again. 
+    else {
+        starfighter_direction = direction;
+        starfighter_velocity = 1;
+    }
+}
+
+// Return starfighter_velocity.
+uint8_t get_starfighter_velocity() {
+    return starfighter_velocity;
+}
+
+// Return starfighter_direction.
+uint8_t get_starfighter_direction() {
+    return starfighter_direction;
+}
+
+// Set starfighter_velocity function.
+void set_starfighter_velocity(uint8_t new_velocity) {
+    starfighter_velocity = new_velocity;
+}
+
+// Set starfighter_direction function.
+void set_starfighter_direction(uint8_t new_direction) {
+    starfighter_direction = new_direction;
 }
