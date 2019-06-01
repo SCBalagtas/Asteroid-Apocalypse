@@ -25,10 +25,13 @@ This file contains the main function for the Asteroid Apocalypse teensypewpew pr
 #include "cab202_adc.h"
 #include "setup_teensy.h"
 #include "starfighter.h"
+#include "game_timer.h"
 
 // Global variables.
 int simulation_over = 0; // false.
 int paused = 1; // true.
+int lives = 5;
+int score = 0;
 
 /**
  * Introduction display.
@@ -46,8 +49,8 @@ void introduction() {
         draw_string(22, 15, "Asteroid", FG_COLOUR);
         draw_string(17, 25, "Apocalypse", FG_COLOUR);
         draw_deflector_shield();
-	    show_screen();
-        // Draw starfighter directly.
+        show_screen();
+        // Draw and animate (update) the starfighter directly.
         draw_starfighter();
         animate_starfighter();
         // Recieve a character from serial communication with the computer and store it in 'ch'.
@@ -55,6 +58,8 @@ void introduction() {
         // Check if left button or 'r' is pressed.
         if (BIT_IS_SET(PINF, 6) || ch == 'r') start_game = 1; // End the introduction display loop.
     }
+    // Seed a new seed for rand().
+    srand(TCNT0);
     // Reset the starfighter before we leave this function.
     setup_starfighter();
 }
@@ -74,6 +79,43 @@ void quit() {
         // Invert screen.
         LCD_CMD(lcd_set_display_mode, lcd_display_inverse);
     }
+}
+
+/**
+ * Status display.
+ * Draws over the teensy screen with the current status information iff game is paused.
+ * Sends status information to the computer 
+ **/
+// Status display related global variables.
+static char lives_status[30];
+static char score_status[30];
+static char comp_status[100];
+static char game_started[20] = "\r\nGame Started!\r\n";
+
+// Send the status display to the computer and if paused, also display on the teensy.
+void status_display() {
+    // Format strings.
+    sprintf(lives_status, "Lives: %d", lives);
+    sprintf(score_status, "Score: %d", score);
+    sprintf(comp_status, "\r\n%s\r\n%s\r\n%s\r\n", get_elapsed_time(), lives_status, score_status);
+    // If paused draw status display on the teensy. 
+    if (paused == 1) {
+        // Draw the status display on the teensy.
+        // Draw text with graphics.h.
+        clear_screen();
+        draw_string(1, 1, get_elapsed_time(), FG_COLOUR);
+        draw_string(1, 11, lives_status, FG_COLOUR);
+        draw_string(1, 21, score_status, FG_COLOUR);
+        show_screen();
+    }
+    // Send comp_status to the computer.
+    usb_serial_send(comp_status);
+}
+
+// Send a game started message as well as the display status.
+void send_game_started() {
+    usb_serial_send(game_started);
+    status_display();
 }
 
 // Draw all function.
@@ -104,6 +146,8 @@ void reset() {
     setup_starfighter();
     // Draw all.
     draw_all();
+    // Reset timers.
+    reset_timers();
     // TEMPORARY!!!
     CLEAR_BIT(PORTB, 2);
     SET_BIT(PORTB, 3);
@@ -141,6 +185,12 @@ void do_operations() {
     // Else if joystick center is set or 'p' is recieved, pause().
     else if (BIT_IS_SET(PINB, 0) || ch == 'p') {
         pause();
+        // Start timer if start_time == 0 and send the game started message, 
+        // when the user first unpauses the game.
+        if (get_start_time() == 0) {
+            start_timer();
+            send_game_started();
+        }
     }
     // Else if joystick left is set or 'a' is recieved, change starfighter direction to left.
     else if (BIT_IS_SET(PINB, 1) || ch == 'a') {
@@ -154,11 +204,10 @@ void do_operations() {
     else if (BIT_IS_SET(PINF, 5) || ch == 'q') {
         simulation_over = 1;
     }
-}
-
-// Interupt service routine to process timer overflow interrupts for timer 0.
-ISR(TIMER0_OVF_vect) {
-    // Implement anything that needs timer overflow here...
+    // Else if joystick down is set or 's' is recieved, status_display().
+    else if (BIT_IS_SET(PINB, 7) || ch == 's') {
+        status_display();
+    }
 }
 
 // This is the main process, runs the simulation.
@@ -168,8 +217,8 @@ void process(void) {
     if (paused == 0) {
         // Run the game.
         update_starfighter();
+        draw_all();
     }
-    draw_all();
 }
 
 // Run the program.

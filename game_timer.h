@@ -4,7 +4,7 @@ Student name: Steven Balagtas
 Student number: n9998250
 Unit: CAB202 Semester 1, 2019
 
-This file contains everything related to setting up the teensy
+This file contains everything related to the game timer 
 for the Asteroid Apocalypse teensypewpew program.
 
 */
@@ -13,7 +13,6 @@ for the Asteroid Apocalypse teensypewpew program.
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
 #include <avr/io.h> 
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -25,6 +24,10 @@ for the Asteroid Apocalypse teensypewpew program.
 #include "macros.h"
 #include "usb_serial.h"
 #include "cab202_adc.h"
+#include "setup_teensy.h"
+#include "starfighter.h"
 
-void usb_serial_send(char * message);
-void setup_teensy();
+void start_timer();
+char * get_elapsed_time();
+void reset_timers();
+double get_start_time();

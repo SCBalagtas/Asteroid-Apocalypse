@@ -13,6 +13,7 @@ for the Asteroid Apocalypse teensypewpew program.
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <avr/io.h> 
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -61,9 +62,9 @@ void setup_timer() {
     sei();
 }
 
-// Setup usb serial connection
+// Setup usb serial connection.
 void setup_usb_serial() {
-	// Set up usb serial connection and display message
+	// Set up usb serial connection and display message.
 	draw_string(10, 10, "Connect USB...", FG_COLOUR);
 	show_screen();
 	usb_init();
@@ -73,6 +74,13 @@ void setup_usb_serial() {
 	clear_screen();
 	draw_string(10, 10, "USB connected", FG_COLOUR);
 	show_screen();
+}
+
+// Define a usb serial send function to send a string the computer.
+void usb_serial_send(char * message) {
+	// Cast to avoid "error: pointer targets in passing argument 1 
+	//	of 'usb_serial_write' differ in signedness"
+	usb_serial_write((uint8_t *) message, strlen(message));
 }
 
 // Setup teensy.
