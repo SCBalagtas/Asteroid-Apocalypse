@@ -26,12 +26,11 @@ This file contains the main function for the Asteroid Apocalypse teensypewpew pr
 #include "setup_teensy.h"
 #include "starfighter.h"
 #include "game_timer.h"
+#include "space_junk.h"
 
 // Global variables.
 int simulation_over = 0; // false.
 int paused = 1; // true.
-int lives = 5;
-int score = 0;
 
 /**
  * Introduction display.
@@ -95,8 +94,8 @@ static char game_started[20] = "\r\nGame Started!\r\n";
 // Send the status display to the computer and if paused, also display on the teensy.
 void status_display() {
     // Format strings.
-    sprintf(lives_status, "Lives: %d", lives);
-    sprintf(score_status, "Score: %d", score);
+    sprintf(lives_status, "Lives: %d", get_lives());
+    sprintf(score_status, "Score: %d", get_score());
     sprintf(comp_status, "\r\n%s\r\n%s\r\n%s\r\n", get_elapsed_time(), lives_status, score_status);
     // If paused draw status display on the teensy. 
     if (paused == 1) {
@@ -132,8 +131,12 @@ void draw_all() {
 void setup(void) {
     // Setup teensy.
     setup_teensy();
+    // Setup deflector shield.
+    setup_deflector_shield();
     // Setup starfighter.
     setup_starfighter();
+    // Setup space junk.
+    setup_space_junk();
     // TEMPORARY!!!
     if (paused == 1) SET_BIT(PORTB, 3);
 }
@@ -142,8 +145,12 @@ void setup(void) {
 void reset() {
     // Pause the game.
     paused = 1;
+    // Reset deflector shield.
+    setup_deflector_shield();
     // Reset starfighter.
     setup_starfighter();
+    // Reset space junk.
+    setup_space_junk();
     // Draw all.
     draw_all();
     // Reset timers.

@@ -25,7 +25,9 @@ for the Asteroid Apocalypse teensypewpew program.
 #include "usb_serial.h"
 #include "cab202_adc.h"
 
+void setup_deflector_shield();
 void draw_deflector_shield();
+int get_lives();
 void setup_starfighter();
 void draw_starfighter();
 void update_starfighter();

@@ -27,7 +27,13 @@ for the Asteroid Apocalypse teensypewpew program.
 
 // Global Deflector Shield variables.
 #define DEFLECTOR_SHIELD_ROW 39
+#define DEFLECTOR_SHIELD_MAX_LIVES 5
+static int lives;
 
+// Setup Deflector Shield, set lives to 5.
+void setup_deflector_shield() {
+    lives = DEFLECTOR_SHIELD_MAX_LIVES;
+}
 // Draw Deflector Shield function.
 void draw_deflector_shield() {
     for (int i = 0; i < LCD_X; i++) {
@@ -38,6 +44,11 @@ void draw_deflector_shield() {
             continue;
         }
     }
+}
+
+// Return lives.
+int get_lives() {
+    return lives;
 }
 
 // Global Starfighter variables.
