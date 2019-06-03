@@ -107,8 +107,9 @@ void update_starfighter() {
         else if (starfighter_direction == 1 && (starfighter_x + 1) <= (LCD_X - STARFIGHTER_WIDTH)) {
             starfighter_x++;
         } 
-        // Else don't update starfighter.
+        // Else don't update starfighter and set velocity to 0.
         else {
+            starfighter_velocity = 0;
             return;
         }
     }
