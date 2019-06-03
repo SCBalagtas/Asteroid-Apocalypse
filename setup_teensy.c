@@ -44,10 +44,6 @@ void setup_teensy_inputs() {
     CLEAR_BIT(DDRF, 5);
     // Initialise ADC to configure input from potentiometers.
     adc_init();
-
-    // TEMPORARY!!!
-    SET_BIT(DDRB, 2);
-    SET_BIT(DDRB, 3);
 }
 
 // Setup timer.

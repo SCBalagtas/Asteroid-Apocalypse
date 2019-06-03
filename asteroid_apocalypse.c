@@ -53,8 +53,6 @@ void setup(void) {
     setup_starfighter();
     // Setup space junk.
     setup_space_junk();
-    // TEMPORARY!!!
-    if (paused == 1) SET_BIT(PORTB, 3);
 }
 
 // A reset function to reset the simulation.
@@ -72,9 +70,6 @@ void reset() {
     draw_all();
     // Reset timers.
     reset_timers();
-    // TEMPORARY!!!
-    CLEAR_BIT(PORTB, 2);
-    SET_BIT(PORTB, 3);
 }
 
 // A pause function which flips the paused variable.
@@ -82,15 +77,9 @@ void pause() {
     if (paused == 1) {
         paused = 0;
         set_display_paused(0);
-        // TEMPORARY!!!
-        CLEAR_BIT(PORTB, 3);
-        SET_BIT(PORTB, 2);
     } else {
         paused = 1;
         set_display_paused(1);
-        // TEMPORARY!!!
-        CLEAR_BIT(PORTB, 2);
-        SET_BIT(PORTB, 3);
     }
 }
 
