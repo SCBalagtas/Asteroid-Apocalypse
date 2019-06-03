@@ -1,0 +1,195 @@
+Test 1
+Category        : 2. Deflector Shield
+Input Sequence  : 'r'
+Expected Outcome: There is a barrier across the screen on row 39 depicted by a 1 pixel high dotted line.
+Actual Outcome	: A barrier depicted by a 1 pixel high dotted line is present across the screen on row 39.
+Status		: Passed
+
+Test 2
+Category        : 3.i, 3.ii, 3.iii, 3.iv, 3.v Starfighter 
+Input Sequence  : 'r'
+Expected Outcome: A stationary 14x7 starfighter with a turret is  horizontally centred in the bottom 8 rows 
+		  (i.e. rows 40 - 47) of the screen.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 3
+Category        : 3.iv, 3.v, 3.vi, 3.vii Starfighter
+Input Sequence  : 'r''p' (wait till starfighter hits the wall) 'r'
+Expected Outcome: When the game is unpaused the starfighter moves either left or right until it hits the edge
+		  edge of the screen, pressing 'r' will reset the starfighter back to the center and will be 
+		  stationary until unpaused again.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 4
+Category        : 5.i, 5.ii, 5.iii Game status information (Teensy)
+Input Sequence  : 'r''s'
+Expected Outcome: The game is paused and the teensy screen will display 'game time', 'lives' and 'score'.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 5
+Category        : 5.i, 5.ii, 5.iii Game status information (Teensy)
+Input Sequence  : 'r''p''s'
+Expected Outcome: The game is unpaused and the teensy screen will not display 'game time', 'lives' and 'score'.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 6
+Category        : 5.iv, 5.v, 5.vi, 5.vii, 5.viii, 5.ix, 5.x, 5.xi, 5.xii Game status information (Computer)
+Input Sequence  : 'r''s'
+Expected Outcome: The game is paused and the console on the computer screen will display 
+		  'game time', 'lives', 'score', 'number of asteroids', 'number of boulders', 'number of fragements', 
+		  'plasma bolts', 'aim of turret' and 'speed of game'.
+Actual Outcome	: Only 'game time', 'lives' and 'score' is displayed in the console of the computer screen.
+Status		: Failed
+
+Test 7
+Category        : 5.iv, 5.v, 5.vi, 5.vii, 5.viii, 5.ix, 5.x, 5.xi, 5.xii Game status information (Computer)
+Input Sequence  : 'r''p''s'
+Expected Outcome: The game is unpaused and the console on the computer screen will display the 'game start' message along with 
+		  'game time', 'lives', 'score', 'number of asteroids', 'number of boulders', 'number of fragements', 
+		  'plasma bolts', 'aim of turret' and 'speed of game'. Pressing 's' will display an updated game status information 
+		  in the console of the computer screen.
+Actual Outcome	: The 'game start' message is displayed but with only 'game time', 'lives' and 'score' with it.
+		  Pressing 's' also only shows an updated 'game time', 'lives' and 'score'.
+Status		: Failed
+
+Test 8
+Category        : 6.i Game status control (unpaused)
+Input Sequence  : 'r''p''s'
+Expected Outcome: The game is unpaused and the game status information is only displayed to the console of the computer screen.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 9
+Category        : 6.ii Game status control (paused)
+Input Sequence  : 'r''s'
+Expected Outcome: The game is paused and the game status information is displayed on the teensy screen and the console of 
+		  the computer screen.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 10
+Category        : 8.i Starfighter movement
+Input Sequence  : 'r''p'
+Expected Outcome: The game is unpaused and the starfighter moves in either the left or right direction.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 11
+Category        : 8.ii Starfighter movement
+Input Sequence  : 'r''p''a''a' (wait till starfighter hits the left wall) 'd'
+Expected Outcome: The game is unpaused and the starfighter has hit the left wall, pressing 'd' will increase the velocity of 
+		  the starfighter in the right direction.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 12
+Category        : 8.iii Starfighter movement
+Input Sequence  : 'r''p''d''d' (wait till starfighter hits the right wall) 'a'
+Expected Outcome: The game is unpaused and the starfighter has hit the right wall, pressing 'a' will increase the velocity of 
+		  the starfighter in the left direction.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 13
+Category        : 8.v Starfighter movement
+Input Sequence  : 'r''p''a''a''d'
+Expected Outcome: The game is unpaused and the starfighter will move in the left direction, pressing 'd' will cause the 
+		  starfighter to stop moving.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 14
+Category        : 8.vii Starfighter movement
+Input Sequence  : 'r''p''d''d''a'
+Expected Outcome: The game is unpaused and the starfighter will move in the right direction, pressing 'a' will cause the 
+		  starfighter to stop moving.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 15
+Category        : 8.viii Starfighter movement
+Input Sequence  : 'r''p''a''a'
+Expected Outcome: The game is unpaused and the starfighter will move in the left direction, when the starfighter hits the 
+		  left wall it will stop moving.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 16
+Category        : 8.viii Starfighter movement
+Input Sequence  : 'r''p''d''d'
+Expected Outcome: The game is unpaused and the starfighter will move in the right direction, when the starfighter hits the 
+		  right wall it will stop moving.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 17
+Category        : 11.i Introduction
+Input Sequence  : 'r'
+Expected Outcome: The introduction display is exited/ skipped and the deflector shield and a stationary starfighter appears 
+		  on the teensy screen.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 18
+Category        : 11.ii, 11.iii, 11.iv, 11.v Introduction
+Input Sequence  : (refresh program, no input)
+Expected Outcome: The introduction display appears showing a student number, game title, some kind of animation and the brightness 
+		  of the back-light is adjusted using PWM.
+Actual Outcome	: The introduction display appears showing a student number, game title and some kind of animation but the brightness 
+		  of the back-light is not adjusted using PWM.
+Status		: Failed
+
+Test 19
+Category        : 13.i, 13.ii Game time and Game start
+Input Sequence  : 'r''p' (wait 5 seconds) 's'
+Expected Outcome: The game is unpaused and the 'game start' message along with the game status information is displayed in the console of 
+		  the computer screen, pressing 's' after 5 seconds will display an updated game status information where 'game time' will 
+		  say: "00:05".
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 20
+Category        : 14.i Game pause
+Input Sequence  : 'r''p' (wait 1 second) 'p'
+Expected Outcome: The game is unpaused and the starfighter moves, pressing 'p' after 1 second pauses the game and the starfighter 
+		  becomes stationary again.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 21
+Category        : 14.ii Game pause
+Input Sequence  : 'r''s' (look at teensy screen) 'p' (wait 2 seconds) 'p''s' (wait 2 seconds) 's'
+Expected Outcome: The game is paused and the status display appears on the teensy with 'game time' showing "00:00". The game is unpaused then paused 
+		  again after 2 seconds, the status display on the teensy should now display 'game time' as "00:02". Pressing 's' after 2 seconds should update 
+		  the status display on the teensy screen but still display 'game time' as "00:02".
+Actual Outcome	: Game time starts on first unpause but does not stop when pausing again (time keeps running while paused).
+Status		: Failed
+
+Test 22
+Category        : 14.iii Game pause
+Input Sequence  : 'r''p' (wait 1 second) 'p' (wait 1 second) 'p'
+Expected Outcome: The game is unpaused and the starfighter moves, pressing 'p' after 1 second pauses the game and the starfighter 
+		  becomes stationary again. Pressing 'p' gain after 1 second resumes the game and the starfighter as well as game time 
+		  resumes movement.
+Actual Outcome	: Starfighter movement is affected by pause and resume but game time is not (time keeps running while paused).
+Status		: Failed
+
+Test 23
+Category        : 17.i Restart game
+Input Sequence  : 'r''p' (wait till starfighter hits a wall) 'r''s'
+Expected Outcome: The game is unpaused until the starfighter hits a wall. The game is restarted (starfighter re-centered and given a new random direction but stationary) 
+		  and game time is reset back to "00:00". Pressing 's' should bring up the game status information on the teensy screen 
+		  showing 'game time' as "00:00".
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
+
+Test 24
+Category        : 18.i Quit game
+Input Sequence  : 'r''q'
+Expected Outcome: The teensy screen is inverted displaying a student number only.
+Actual Outcome	: "Expected Outcome"
+Status		: Passed
